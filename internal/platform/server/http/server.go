@@ -63,6 +63,8 @@ func (s *server) registerRoutes() {
 }
 
 func (s *server) Run(ctx context.Context) error {
+	log.Printf("Server running on %s\n", s.httpAddr)
+
 	srv := &http.Server{
 		Addr:    s.httpAddr,
 		Handler: s.engine,
@@ -77,6 +79,8 @@ func (s *server) Run(ctx context.Context) error {
 	<-ctx.Done()
 	ctxShutDown, cancel := context.WithTimeout(context.Background(), s.shutdownTimeout)
 	defer cancel()
+
+	log.Println("Server shutting down...")
 
 	return srv.Shutdown(ctxShutDown)
 }
