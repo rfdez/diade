@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-    tags:        
+    tags:
       - '**'
 
 env:
@@ -158,6 +158,6 @@ jobs:
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/voting-poll:${{ steps.image.outputs.tag }}
+          tags: ghcr.io/${{ github.repository }}:${{ steps.image.outputs.tag }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
