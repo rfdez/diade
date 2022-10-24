@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  app:
+    image: 'rfdez/diade-api:latest'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: diade-api
+    ports:
+      - '8080:8080'
+    depends_on:
+      - db
+    environment:
+      DIADE_DBUSER: '${DB_USER}'
+      DIADE_DBPASS: '${DB_PASS}'
+      DIADE_DBHOST: '${DB_HOST}'
+      DIADE_DBPORT: '${DB_PORT}'
+      DIADE_DBNAME: '${DB_NAME}'
+      DIADE_DBPARAMS: '${DB_PARAMS}'
+    networks:
+      - diade-network
+    restart: on-failure
+  db:
+    image: 'postgres:14.2-alpine'
+    container_name: diade-db
+    expose:
+      - '5432'
+    environment:
+      POSTGRES_USER: '${DB_USER}'
+      POSTGRES_PASSWORD: '${DB_PASS}'
+      POSTGRES_DB: '${DB_NAME}'
+    volumes:
+      - 'diade-api-dbdata:/var/lib/postgresql/data'
+      - './sql/:/docker-entrypoint-initdb.d'
+    networks:
+      - diade-network
+    restart: on-failure
+
+volumes:
+  diade-api-dbdata:
+    driver: local
+    name: diade-api-dbdata
+networks:
+  diade-network:
+    driver: bridge
+    name: diade-network
