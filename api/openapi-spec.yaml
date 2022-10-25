@@ -1,0 +1,93 @@
+openapi: 3.0.0
+info:
+  title: Diade API
+  version: 0.1.2
+servers:
+  - url: https://diade.raulfernandez.dev
+    description: Production server
+  - url: http://localhost:8080
+    description: Local server
+paths:
+  /status:
+    get:
+      tags:
+        - Status
+      operationId: status
+      summary: Application Health Check
+      description: Check if the application is running
+      responses:
+        '200':
+          description: Status OK
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /celebrations:
+    get:
+      tags:
+        - Celebration
+      operationId: getCelebrations
+      summary: Get Celebrations
+      description: Get celebrations by date
+      responses:
+        '200':
+          $ref: '#/components/responses/CelebrationsOk'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      parameters:
+        - $ref: '#/components/parameters/CelebrationDate'
+
+components:
+  schemas:
+    Celebration:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Celebration ID
+        date:
+          type: string
+          description: Celebration Date
+        name:
+          type: string
+          description: Celebration Name
+        status:
+          type: string
+          description: Celebration Status
+        type:
+          type: string
+          description: Celebration Type
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+  parameters:
+    CelebrationDate:
+      name: date
+      in: query
+      description: Celebration date (YYYY-MM-DD)
+      required: true
+      schema:
+        type: string
+        format: date
+  responses:
+    CelebrationsOk:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Celebration'
+    BadRequest:
+      description: Status Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Status Not Found
+    InternalServerError:
+          description: Status Internal Server Error

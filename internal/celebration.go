@@ -15,6 +15,10 @@ type CelebrationID struct {
 
 // NewCelebrationID creates a new CelebrationID.
 func NewCelebrationID(value string) (CelebrationID, error) {
+	if value == "" {
+		return CelebrationID{}, errors.NewWrongInput("empty celebration ID")
+	}
+
 	if err := uuid.EnsureIsValidUUID(value); err != nil {
 		return CelebrationID{}, errors.NewWrongInput("invalid celebration ID, %s", value)
 	}
@@ -34,6 +38,10 @@ type CelebrationDate struct {
 
 // NewCelebrationDate creates a new CelebrationDate.
 func NewCelebrationDate(value string) (CelebrationDate, error) {
+	if value == "" {
+		return CelebrationDate{}, errors.NewWrongInput("empty celebration date")
+	}
+
 	if err := datetime.EnsureIsValidDate(value); err != nil {
 		return CelebrationDate{}, errors.NewWrongInput("invalid celebration date, %s", value)
 	}
@@ -54,7 +62,7 @@ type CelebrationName struct {
 // NewCelebrationName creates a new CelebrationName.
 func NewCelebrationName(value string) (CelebrationName, error) {
 	if value == "" {
-		return CelebrationName{}, errors.NewWrongInput("invalid celebration name, %s", value)
+		return CelebrationName{}, errors.NewWrongInput("empty celebration name")
 	}
 
 	return CelebrationName{value: value}, nil
@@ -73,7 +81,7 @@ type CelebrationStatus struct {
 // NewCelebrationStatus creates a new CelebrationStatus.
 func NewCelebrationStatus(value string) (CelebrationStatus, error) {
 	if value == "" {
-		return CelebrationStatus{}, errors.NewWrongInput("invalid celebration status, %s", value)
+		return CelebrationStatus{}, errors.NewWrongInput("empty celebration status")
 	}
 
 	return CelebrationStatus{value: value}, nil
@@ -92,7 +100,7 @@ type CelebrationType struct {
 // NewCelebrationType creates a new CelebrationType.
 func NewCelebrationType(value string) (CelebrationType, error) {
 	if value == "" {
-		return CelebrationType{}, errors.NewWrongInput("invalid celebration type, %s", value)
+		return CelebrationType{}, errors.NewWrongInput("empty celebration type")
 	}
 
 	return CelebrationType{value: value}, nil
