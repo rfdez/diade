@@ -61,7 +61,7 @@ Compilation of international celebrations. At this moment the project only suppo
 
 ### Built With
 
-* [![Go][Go.dev]][Golang-url]
+* [![Go][Go.dev]][Go-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
