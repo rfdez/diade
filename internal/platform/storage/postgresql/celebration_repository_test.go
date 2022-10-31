@@ -26,7 +26,7 @@ func Test_CelebrationRepository_SearchByDate_RepositoryError(t *testing.T) {
 		WithArgs(date.String()).
 		WillReturnError(errors.New("error"))
 
-	repo := postgresql.NewCelebrationRepository(db, 1*time.Millisecond)
+	repo := postgresql.NewCelebrationRepository(db, 5*time.Second)
 
 	_, err = repo.SearchByDate(context.Background(), date)
 
@@ -51,7 +51,7 @@ func Test_CelebrationRepository_SearchByDate_Succeed(t *testing.T) {
 		WithArgs(dateVO.String()).
 		WillReturnRows(rows)
 
-	repo := postgresql.NewCelebrationRepository(db, 1*time.Millisecond)
+	repo := postgresql.NewCelebrationRepository(db, 5*time.Second)
 
 	_, err = repo.SearchByDate(context.Background(), dateVO)
 
