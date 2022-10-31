@@ -7,7 +7,7 @@ RUN apk add --update git \
 	&& apk add ca-certificates
 WORKDIR /go/src/github.com/rfdez/diade
 COPY . .
-RUN go mod tidy && TAG=$(git describe --tags --abbrev=0) \
+RUN go mod tidy && TAG=$(git rev-parse --short HEAD) \
     && LDFLAGS=$(echo "-s -w -X main.version="$TAG) \
     && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o /go/bin/diade-api -ldflags "$LDFLAGS" cmd/diade-api/main.go
 
