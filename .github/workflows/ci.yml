@@ -6,6 +6,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - "**"
 
 env:
   GOLANG_VERSION: '1.18'
@@ -126,9 +128,12 @@ jobs:
   build-push-image:
     name: Build and Push Docker Image
     needs:
+      - check-go
       - build-go
+      - lint-go
       - test-go
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -155,7 +160,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Set Image Tag
         id: image
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        run: echo "::set-output name=tag::${GITHUB_REF#refs/*/}"
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v2
         with:
@@ -165,8 +170,8 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ steps.image.outputs.sha_short }}
+            ghcr.io/${{ github.repository }}:${{ steps.image.outputs.tag }}
             ${{ github.repository }}:latest
-            ${{ github.repository }}:${{ steps.image.outputs.sha_short }}
+            ${{ github.repository }}:${{ steps.image.outputs.tag }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
