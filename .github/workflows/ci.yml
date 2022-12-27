@@ -22,15 +22,7 @@ jobs:
         uses: actions/setup-go@v3
         with:
           go-version: ${{ env.GOLANG_VERSION }}
-      - name: Setup Golang caches
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-golang-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-golang-
+          cache: true
       - name: Download all Go modules
         run: |
           go mod download
@@ -43,7 +35,7 @@ jobs:
           go mod verify
 
   build-go:
-    name: Build and cache Go code
+    name: Build Go code
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -52,15 +44,7 @@ jobs:
         uses: actions/setup-go@v3
         with:
           go-version: ${{ env.GOLANG_VERSION }}
-      - name: Setup Golang caches
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-golang-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-golang-
+          cache: true
       - name: Download all Go modules
         run: |
           go mod download
@@ -78,15 +62,7 @@ jobs:
         uses: actions/setup-go@v3
         with:
           go-version: ${{ env.GOLANG_VERSION }}
-      - name: Setup Golang caches
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-golang-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-golang-
+          cache: true
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
@@ -103,15 +79,7 @@ jobs:
         uses: actions/setup-go@v3
         with:
           go-version: ${{ env.GOLANG_VERSION }}
-      - name: Setup Golang caches
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-golang-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-golang-
+          cache: true
       - name: Run Go Tests
         run: |
           go test -short -race -coverprofile coverage.txt -covermode atomic $(go list ./... | grep -v /vendor/ | tr '\n' ' ')
