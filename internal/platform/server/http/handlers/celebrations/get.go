@@ -39,7 +39,7 @@ func GetHandler(queryBus query.Bus) gin.HandlerFunc {
 			return
 		}
 
-		var response []celebrationResponse
+		var response = make([]celebrationResponse, 0, len(celebrations))
 		for _, c := range celebrations {
 			response = append(response, celebrationResponse{
 				ID:     c.ID(),
