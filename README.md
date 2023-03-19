@@ -9,10 +9,6 @@
 
 <br />
 <div align="center">
-  <a href="https://github.com/rfdez/diade">
-    <img src="images/logo.svg" alt="Logo" width="80" height="80">
-  </a>
-
 <h3 align="center">Diade</h3>
 
   <p align="center">
@@ -52,8 +48,6 @@
 </details>
 
 ## About The Project
-
-[![Diade Screen Shot][product-screenshot]](https://diade.raulfernandez.dev)
 
 Compilation of international celebrations. At this moment the project only supports spanish language.
 
