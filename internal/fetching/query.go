@@ -42,8 +42,8 @@ func NewCelebrationByDateQueryHandler(service Service) CelebrationByDateQueryHan
 }
 
 // Handle handles the CelebrationByDateQuery.
-func (h CelebrationByDateQueryHandler) Handle(ctx context.Context, query query.Query) (query.Response, error) {
-	q, ok := query.(CelebrationByDateQuery)
+func (h CelebrationByDateQueryHandler) Handle(ctx context.Context, qr query.Query) (query.Response, error) {
+	q, ok := qr.(CelebrationByDateQuery)
 	if !ok {
 		return nil, errors.New("invalid query type")
 	}

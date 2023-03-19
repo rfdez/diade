@@ -10,7 +10,7 @@ type CelebrationResponse struct {
 }
 
 // NewCelebrationResponse creates a new CelebrationResponse.
-func NewCelebrationResponse(id string, date, name, status, t string) CelebrationResponse {
+func NewCelebrationResponse(id, date, name, status, t string) CelebrationResponse {
 	return CelebrationResponse{id: id, date: date, name: name, status: status, cType: t}
 }
 

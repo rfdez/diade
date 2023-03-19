@@ -2,7 +2,7 @@ package query
 
 import "context"
 
-// Bus defines the expected behaviour from a query bus.
+// Bus defines the expected behavior from a query bus.
 type Bus interface {
 	// Dispatch is the method used to dispatch new queries.
 	Ask(context.Context, Query) (Response, error)
@@ -20,7 +20,7 @@ type Query interface {
 	Type() Type
 }
 
-// Handler defines the expected behaviour from a query handler.
+// Handler defines the expected behavior from a query handler.
 type Handler interface {
 	Handle(context.Context, Query) (Response, error)
 }

@@ -22,36 +22,32 @@ func main() {
 		log.Fatal(err)
 	}
 
-	psqlURI := fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?%s", cfg.DbUser, cfg.DbPass, cfg.DbHost, cfg.DbPort, cfg.DbName, cfg.DbParams)
+	psqlURI := fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?%s", cfg.DBUser, cfg.DBPass, cfg.DBHost, cfg.DBPort, cfg.DBName, cfg.DBParams)
 	db, err := sql.Open("postgres", psqlURI)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Bus
-	var (
-		queryBus = inmemory.NewQueryBus()
-	)
+
+	queryBus := inmemory.NewQueryBus()
 
 	// Repositories
-	var (
-		celebrationRepository = postgresql.NewCelebrationRepository(db, cfg.DbTimeout)
-	)
+
+	celebrationRepository := postgresql.NewCelebrationRepository(db, cfg.DBTimeout)
 
 	// Services
-	var (
-		fetchingService = fetching.NewService(celebrationRepository)
-	)
+
+	fetchingService := fetching.NewService(celebrationRepository)
 
 	// Query Handlers
-	var (
-		fetchingCelebrationByDateHandler = fetching.NewCelebrationByDateQueryHandler(fetchingService)
-	)
+
+	fetchingCelebrationByDateHandler := fetching.NewCelebrationByDateQueryHandler(fetchingService)
 
 	// Register query handlers
 	queryBus.Register(fetching.CelebrationByDateQueryType, fetchingCelebrationByDateHandler)
 
-	ctx, srv := http.New(context.Background(), cfg.HttpHost, cfg.HttpPort, cfg.ShutdownTimeout, queryBus)
+	ctx, srv := http.New(context.Background(), cfg.HTTPHost, cfg.HTTPPort, cfg.ShutdownTimeout, queryBus)
 	if err := srv.Run(ctx); err != nil {
 		log.Fatal(err)
 	}
@@ -59,15 +55,15 @@ func main() {
 
 type config struct {
 	// Http Server configuration
-	HttpHost        string        `default:""`
-	HttpPort        uint          `default:"8080"`
+	HTTPHost        string        `default:""`
+	HTTPPort        uint          `default:"8080"`
 	ShutdownTimeout time.Duration `default:"10s"`
 	// Database configuration
-	DbUser    string        `default:"diade"`
-	DbPass    string        `default:"diade"`
-	DbHost    string        `default:"localhost"`
-	DbPort    uint          `default:"5432"`
-	DbName    string        `default:"diade"`
-	DbParams  string        `default:""`
-	DbTimeout time.Duration `default:"5s"`
+	DBUser    string        `default:"diade"`
+	DBPass    string        `default:"diade"`
+	DBHost    string        `default:"localhost"`
+	DBPort    uint          `default:"5432"`
+	DBName    string        `default:"diade"`
+	DBParams  string        `default:""`
+	DBTimeout time.Duration `default:"5s"`
 }

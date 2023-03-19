@@ -1,6 +1,7 @@
 package celebrations_test
 
 import (
+	"context"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -27,7 +28,7 @@ func TestHandler_Get(t *testing.T) {
 	r.GET("/celebrations", celebrations.GetHandler(queryBus))
 
 	t.Run("given a valid request it returns 200", func(t *testing.T) {
-		req, err := http.NewRequest(http.MethodGet, "/celebrations", nil)
+		req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, "/celebrations", http.NoBody)
 		require.NoError(t, err)
 
 		rec := httptest.NewRecorder()

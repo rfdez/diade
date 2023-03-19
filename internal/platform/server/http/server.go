@@ -13,14 +13,13 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/logger"
 	"github.com/gin-gonic/gin"
-	"github.com/rs/zerolog"
-
 	"github.com/rfdez/diade/internal/platform/server/http/handlers/celebrations"
 	"github.com/rfdez/diade/internal/platform/server/http/handlers/status"
 	"github.com/rfdez/diade/kit/query"
+	"github.com/rs/zerolog"
 )
 
-type server struct {
+type Server struct {
 	httpAddr        string
 	engine          *gin.Engine
 	shutdownTimeout time.Duration
@@ -30,10 +29,10 @@ type server struct {
 }
 
 // New creates a new HTTP server.
-func New(ctx context.Context, host string, port uint, shutdownTimeout time.Duration, queryBys query.Bus) (context.Context, server) {
+func New(ctx context.Context, host string, port uint, shutdownTimeout time.Duration, queryBys query.Bus) (context.Context, Server) {
 	gin.SetMode(gin.ReleaseMode)
 
-	srv := server{
+	srv := Server{
 		httpAddr:        fmt.Sprintf("%s:%d", host, port),
 		engine:          gin.New(),
 		shutdownTimeout: shutdownTimeout,
@@ -46,7 +45,7 @@ func New(ctx context.Context, host string, port uint, shutdownTimeout time.Durat
 	return serverContext(ctx), srv
 }
 
-func (s *server) registerRoutes() {
+func (s *Server) registerRoutes() {
 	s.engine.Use(gin.Recovery())
 	s.engine.Use(logger.SetLogger(
 		logger.WithLogger(func(c *gin.Context, l zerolog.Logger) zerolog.Logger {
@@ -79,7 +78,7 @@ func (s *server) registerRoutes() {
 	s.engine.GET("/celebrations", celebrations.GetHandler(s.queryBys))
 }
 
-func (s *server) Run(ctx context.Context) error {
+func (s *Server) Run(ctx context.Context) error {
 	log.Printf("Server running on %s\n", s.httpAddr)
 
 	srv := &http.Server{

@@ -22,9 +22,9 @@ func NewCelebrationRepository(db *sql.DB, dbTimeout time.Duration) diade.Celebra
 
 // SearchByDate implements the CelebrationRepository interface.
 func (r *celebrationRepository) SearchByDate(ctx context.Context, date diade.CelebrationDate) ([]diade.Celebration, error) {
-	celebrationSqlStruct := sqlbuilder.NewStruct(new(sqlCelebration)).For(sqlbuilder.PostgreSQL)
+	celebrationSQLStruct := sqlbuilder.NewStruct(new(sqlCelebration)).For(sqlbuilder.PostgreSQL)
 
-	sb := celebrationSqlStruct.SelectFrom(sqlCelebrationTable)
+	sb := celebrationSQLStruct.SelectFrom(sqlCelebrationTable)
 	sb.Where(sb.E("date", date.String()))
 
 	query, args := sb.Build()
@@ -40,12 +40,12 @@ func (r *celebrationRepository) SearchByDate(ctx context.Context, date diade.Cel
 
 	var celebrations []diade.Celebration
 	for rows.Next() {
-		var sqlCelebration sqlCelebration
-		if err := rows.Scan(celebrationSqlStruct.Addr(&sqlCelebration)...); err != nil {
+		var sqlC sqlCelebration
+		if err := rows.Scan(celebrationSQLStruct.Addr(&sqlC)...); err != nil {
 			return nil, errors.New("error scanning celebrations")
 		}
 
-		celebration, err := diade.NewCelebration(sqlCelebration.ID, sqlCelebration.Date.Format("2006-01-02"), sqlCelebration.Name, sqlCelebration.Status, sqlCelebration.Type)
+		celebration, err := diade.NewCelebration(sqlC.ID, sqlC.Date.Format("2006-01-02"), sqlC.Name, sqlC.Status, sqlC.Type)
 		if err != nil {
 			return nil, errors.New("error converting sql celebration to celebration")
 		}

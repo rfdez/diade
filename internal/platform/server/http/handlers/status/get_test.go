@@ -1,6 +1,7 @@
 package status_test
 
 import (
+	"context"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -17,7 +18,7 @@ func TestHandler_Get(t *testing.T) {
 	r.GET("/status", status.GetHandler())
 
 	t.Run("it returns 200", func(t *testing.T) {
-		req, err := http.NewRequest(http.MethodGet, "/status", nil)
+		req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, "/status", http.NoBody)
 		require.NoError(t, err)
 
 		rec := httptest.NewRecorder()
