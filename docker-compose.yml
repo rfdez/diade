@@ -1,46 +1,51 @@
-version: '3.8'
+version: "3.8"
+
 services:
   app:
-    image: 'rfdez/diade-api:latest'
     build:
       context: .
       dockerfile: Dockerfile
     container_name: diade-api
-    ports:
-      - '8080:8080'
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
-      DIADE_DBUSER: '${DB_USER}'
-      DIADE_DBPASS: '${DB_PASS}'
-      DIADE_DBHOST: '${DB_HOST}'
-      DIADE_DBPORT: '${DB_PORT}'
-      DIADE_DBNAME: '${DB_NAME}'
-      DIADE_DBPARAMS: '${DB_PARAMS}'
+      DIADE_DBUSER: ${DB_USER}
+      DIADE_DBPASS: ${DB_PASS}
+      DIADE_DBHOST: ${DB_HOST}
+      DIADE_DBPORT: ${DB_PORT}
+      DIADE_DBNAME: ${DB_NAME}
+      DIADE_DBPARAMS: ${DB_PARAMS}
+    image: rfdez/diade-api:latest
     networks:
       - diade-network
-    restart: on-failure
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
   db:
-    image: 'postgres:14.2-alpine'
     container_name: diade-db
-    expose:
-      - '5432'
     environment:
       POSTGRES_USER: '${DB_USER}'
       POSTGRES_PASSWORD: '${DB_PASS}'
       POSTGRES_DB: '${DB_NAME}'
+    expose:
+      - '5432'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      timeout: 5s
+      interval: 10s
+      retries: 5
+    image: postgres:15.2-alpine
+    networks:
+      - diade-network
+    restart: unless-stopped
     volumes:
       - 'diade-api-dbdata:/var/lib/postgresql/data'
       - './sql/:/docker-entrypoint-initdb.d'
-    networks:
-      - diade-network
-    restart: on-failure
+
+networks:
+  diade-network:
 
 volumes:
   diade-api-dbdata:
-    driver: local
-    name: diade-api-dbdata
-networks:
-  diade-network:
-    driver: bridge
-    name: diade-network
