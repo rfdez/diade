@@ -1,23 +1,22 @@
-name: Main
+name: CI
 on:
   push:
     branches:
       - main
   pull_request:
 
-env:
-  GOLANG_VERSION: 1.20
-  CGO_ENABLED: 0
-  GOLANGCI_LINT_VERSION: v1.52.0
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  check-go:
-    name: Ensure Go modules syncrhonicity
+  ci-process:
+    name: CI Process
     runs-on: ubuntu-latest
+    env:
+      GOLANG_VERSION: 1.20
+      CGO_ENABLED: 0
+      GOLANGCI_LINT_VERSION: v1.52.0
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -25,7 +24,13 @@ jobs:
         uses: actions/setup-go@v3
         with:
           go-version: ${{ env.GOLANG_VERSION }}
-          cache: true
+      - name: Cache Go modules
+        uses: actions/cache@v3
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
       - name: Download all Go modules
         run: |
           go mod download
@@ -36,52 +41,13 @@ jobs:
       - name: Verify Go modules
         run: |
           go mod verify
-
-  build-go:
-    name: Build Go code
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Setup Go
-        uses: actions/setup-go@v3
-        with:
-          go-version: ${{ env.GOLANG_VERSION }}
-          cache: true
-      - name: Download all Go modules
-        run: |
-          go mod download
       - name: Compile all packages
         run: |
           go build -v $(go list ./... | grep -v /vendor/ | tr '\n' ' ')
-
-  lint-go:
-    name: Lint Go code
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Setup Go
-        uses: actions/setup-go@v3
-        with:
-          go-version: ${{ env.GOLANG_VERSION }}
-          cache: true
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
           version: ${{ env.GOLANGCI_LINT_VERSION }}
-
-  test-go:
-    name: Test Go code
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Setup Go
-        uses: actions/setup-go@v3
-        with:
-          go-version: ${{ env.GOLANG_VERSION }}
-          cache: true
       - name: Run Go Tests
         run: |
           go test -short -race -coverprofile coverage.txt -covermode atomic $(go list ./... | grep -v /vendor/ | tr '\n' ' ')
