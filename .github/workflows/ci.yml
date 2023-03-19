@@ -1,11 +1,14 @@
-name: Build and Test
+name: Main
 on:
   push:
     branches:
       - main
+  pull_request:
 
 env:
-  GOLANG_VERSION: '1.18'
+  GOLANG_VERSION: 1.20
+  CGO_ENABLED: 0
+  GOLANGCI_LINT_VERSION: v1.52.0
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -66,8 +69,7 @@ jobs:
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.46.2
-          args: --timeout 10m --verbose
+          version: ${{ env.GOLANGCI_LINT_VERSION }}
 
   test-go:
     name: Test Go code
