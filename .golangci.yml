@@ -1,0 +1,81 @@
+run:
+  timeout: 2m
+  skip-files: []
+
+linters-settings:
+  govet:
+    enable-all: true
+    disable:
+      - fieldalignment
+  gocyclo:
+    min-complexity: 16
+  goconst:
+    min-len: 3
+    min-occurrences: 3
+  misspell:
+    locale: US
+  funlen:
+    lines: -1
+    statements: 40
+  gofumpt:
+    extra-rules: true
+  godox:
+    keywords:
+      - FIXME
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - style
+      - performance
+    disabled-checks:
+      - sloppyReassign
+      - rangeValCopy
+      - octalLiteral
+      - paramTypeCombine # already handle by gofumpt.extra-rules
+    settings:
+      hugeParam:
+        sizeThreshold: 100
+  forbidigo:
+    forbid:
+      - '^print(ln)?$'
+      - '^panic$'
+      - '^spew\.Print(f|ln)?$'
+      - '^spew\.Dump$'
+
+linters:
+  enable-all: true
+  disable:
+    - deadcode # deprecated
+    - exhaustivestruct # deprecated
+    - golint # deprecated
+    - ifshort # deprecated
+    - interfacer # deprecated
+    - maligned # deprecated
+    - nosnakecase # deprecated
+    - scopelint # deprecated
+    - scopelint # deprecated
+    - structcheck # deprecated
+    - varcheck # deprecated
+    - cyclop # duplicate of gocyclo
+    - dupl
+    - exhaustive
+    - exhaustruct
+    - forbidigo
+    - gochecknoglobals
+    - gochecknoinits
+    - goerr113
+    - gomnd
+    - gosec
+    - lll
+    - nilnil
+    - nlreturn
+    - paralleltest
+    - prealloc
+    - testpackage
+    - tparallel
+    - varnamelen
+    - wrapcheck
+    - wsl
+    - nosprintfhostport
+    - ireturn
+    - contextcheck
