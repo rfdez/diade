@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1
+# syntax=docker/dockerfile:1.2
 FROM golang:1.20-alpine AS build
 
 RUN apk --no-cache --no-progress add git ca-certificates tzdata make \
@@ -15,6 +15,7 @@ COPY . .
 
 RUN make build
 
+# syntax=docker/dockerfile:1.2
 FROM scratch
 
 COPY --from=build /usr/share/zoneinfo /usr/share/zoneinfo

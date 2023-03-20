@@ -13,4 +13,5 @@ COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY diade /
 
 ENTRYPOINT ["/diade"]
+
 EXPOSE 8080

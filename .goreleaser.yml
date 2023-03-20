@@ -37,6 +37,7 @@ archives:
         format: zip
     files:
       - LICENSE
+      - README.md
 
 docker_manifests:
   - name_template: 'rfdez/diade:{{ .Tag }}'
@@ -87,7 +88,7 @@ dockers:
       - '--pull'
       # https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
       - '--label=org.opencontainers.image.title={{.ProjectName}}'
-      - '--label=org.opencontainers.image.description=Tiny Go webserver that prints OS information and HTTP request to output'
+      - '--label=org.opencontainers.image.description=Compilation of international celebrations.'
       - '--label=org.opencontainers.image.source={{.GitURL}}'
       - '--label=org.opencontainers.image.url={{.GitURL}}'
       - '--label=org.opencontainers.image.documentation={{.GitURL}}'
@@ -111,7 +112,7 @@ dockers:
       - '--pull'
       # https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
       - '--label=org.opencontainers.image.title={{.ProjectName}}'
-      - '--label=org.opencontainers.image.description=Tiny Go webserver that prints OS information and HTTP request to output'
+      - '--label=org.opencontainers.image.description=Compilation of international celebrations.'
       - '--label=org.opencontainers.image.source={{.GitURL}}'
       - '--label=org.opencontainers.image.url={{.GitURL}}'
       - '--label=org.opencontainers.image.documentation={{.GitURL}}'
@@ -136,7 +137,7 @@ dockers:
       - '--pull'
       # https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
       - '--label=org.opencontainers.image.title={{.ProjectName}}'
-      - '--label=org.opencontainers.image.description=Tiny Go webserver that prints OS information and HTTP request to output'
+      - '--label=org.opencontainers.image.description=Compilation of international celebrations.'
       - '--label=org.opencontainers.image.source={{.GitURL}}'
       - '--label=org.opencontainers.image.url={{.GitURL}}'
       - '--label=org.opencontainers.image.documentation={{.GitURL}}'

@@ -1,4 +1,4 @@
-.PHONY: build test check docker/up docker/down help
+.PHONY: build test check docker/build docker/up docker/down help
 
 IMAGE_NAME := rfdez/diade
 
