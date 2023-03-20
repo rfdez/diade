@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  ci-process:
+  ci:
     name: CI Process
     runs-on: ubuntu-latest
     env:
@@ -20,34 +20,27 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Setup Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version: ${{ env.GOLANG_VERSION }}
-      - name: Cache Go modules
-        uses: actions/cache@v3
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
       - name: Check and get dependencies
         run: |
           go mod tidy
           git diff --exit-code go.mod
           git diff --exit-code go.sum
-      - name: Compile all packages
+      - name: Build Go Code
         run: |
-          go build -v $(go list ./... | grep -v /vendor/ | tr '\n' ' ')
+          make build
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
           version: ${{ env.GOLANGCI_LINT_VERSION }}
       - name: Run Go Tests
         run: |
-          go test -short -race -coverprofile coverage.txt -covermode atomic $(go list ./... | grep -v /vendor/ | tr '\n' ' ')
-          go tool cover -func=coverage.txt
-      - name: Upload code coverage information to codecov.io
-        uses: codecov/codecov-action@v2
-        with:
-          files: coverage.txt
+          make test
+      - name: Build Docker Image
+        run: |
+          make docker/build

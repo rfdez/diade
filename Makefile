@@ -1,5 +1,7 @@
 .PHONY: build test check docker/up docker/down help
 
+IMAGE_NAME := rfdez/diade
+
 all: help
 
 ## Build the project
@@ -13,6 +15,10 @@ test:
 ## Check the project code style
 check:
 	@golangci-lint run
+
+## Build the docker image
+docker/build:
+	@docker build -t $(IMAGE_NAME) .
 
 ## Create and start containers
 docker/up:
