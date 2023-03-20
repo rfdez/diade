@@ -9,8 +9,7 @@
 
 <br />
 <div align="center">
-<h3 align="center">Diade</h3>
-
+  <h3 align="center">Diade</h3>
   <p align="center">
     Compilation of international celebrations
     <br />
@@ -86,7 +85,7 @@ This is an example of how to list things you need to use the software and how to
 
 ## Usage
 
-You can use the [Swagger editor](https://editor.swagger.io/) to test the project with its UI. Paste the content of the [openapi-spec.yaml](api/openapi-spec.yaml) file and you will be able to test the project.
+The API server will be running on port 8080. You can access the API celebrations endpoint at http://localhost:8080/celebrations. You can also access the API celebrations endpoint at http://localhost:8080/celebrations?date=2021-01-01.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
