@@ -38,6 +38,10 @@ func (r *celebrationRepository) SearchByDate(ctx context.Context, date diade.Cel
 	}
 	defer rows.Close()
 
+	if rows.Err() != nil {
+		return nil, errors.New("error querying celebrations")
+	}
+
 	var celebrations []diade.Celebration
 	for rows.Next() {
 		var sqlC sqlCelebration
