@@ -2,6 +2,7 @@ project_name: diade
 
 builds:
   - binary: diade
+    main: ./cmd/diade-api
     goos:
       - windows
       - darwin
