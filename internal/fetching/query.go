@@ -8,6 +8,7 @@ import (
 )
 
 const (
+	// CelebrationByDateQueryType is the type of the CelebrationByDateQuery.
 	CelebrationByDateQueryType query.Type = "query.fetcher.celeration_by_date"
 )
 
