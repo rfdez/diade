@@ -1,5 +1,8 @@
 project_name: diade
 
+variables:
+  description: Compilation of international celebrations.
+
 builds:
   - binary: diade
     main: ./cmd/diade-api
@@ -16,8 +19,18 @@ builds:
 
 release:
   prerelease: auto
+  mode: append
+  header: |
+    ## Changelog ({{ .Date }})
+
+    Welcome to this new release!
+  footer: |
+    ## Thanks!
+
+    Those were the changes on {{ .Tag }}!
 
 changelog:
+  use: github
   sort: asc
   filters:
     exclude:
@@ -88,7 +101,7 @@ dockers:
       - '--pull'
       # https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
       - '--label=org.opencontainers.image.title={{.ProjectName}}'
-      - '--label=org.opencontainers.image.description=Compilation of international celebrations.'
+      - '--label=org.opencontainers.image.description={{.Var.description}}'
       - '--label=org.opencontainers.image.source={{.GitURL}}'
       - '--label=org.opencontainers.image.url={{.GitURL}}'
       - '--label=org.opencontainers.image.documentation={{.GitURL}}'
@@ -112,7 +125,7 @@ dockers:
       - '--pull'
       # https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
       - '--label=org.opencontainers.image.title={{.ProjectName}}'
-      - '--label=org.opencontainers.image.description=Compilation of international celebrations.'
+      - '--label=org.opencontainers.image.description={{.Var.description}}'
       - '--label=org.opencontainers.image.source={{.GitURL}}'
       - '--label=org.opencontainers.image.url={{.GitURL}}'
       - '--label=org.opencontainers.image.documentation={{.GitURL}}'
@@ -137,7 +150,7 @@ dockers:
       - '--pull'
       # https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
       - '--label=org.opencontainers.image.title={{.ProjectName}}'
-      - '--label=org.opencontainers.image.description=Compilation of international celebrations.'
+      - '--label=org.opencontainers.image.description={{.Var.description}}'
       - '--label=org.opencontainers.image.source={{.GitURL}}'
       - '--label=org.opencontainers.image.url={{.GitURL}}'
       - '--label=org.opencontainers.image.documentation={{.GitURL}}'
