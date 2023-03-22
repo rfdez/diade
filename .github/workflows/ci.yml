@@ -40,12 +40,7 @@ jobs:
           version: ${{ env.GOLANGCI_LINT_VERSION }}
       - name: Run Go Tests
         run: |
-          go test -coverprofile coverage.txt -covermode atomic ./...
-          go tool cover -func=coverage.txt
-      - name: Upload code coverage information to codecov.io
-        uses: codecov/codecov-action@v3
-        with:
-          files: coverage.txt
+          make test
       - name: Build Docker Image
         run: |
           make docker/build
