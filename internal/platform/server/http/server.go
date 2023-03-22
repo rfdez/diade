@@ -15,6 +15,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rfdez/diade/internal/platform/server/http/handlers/celebrations"
 	"github.com/rfdez/diade/internal/platform/server/http/handlers/status"
+	"github.com/rfdez/diade/kit/errors"
 	"github.com/rfdez/diade/kit/query"
 	"github.com/rs/zerolog"
 )
@@ -87,7 +88,7 @@ func (s *Server) Run(ctx context.Context) error {
 	}
 
 	go func() {
-		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Fatal(err)
 		}
 	}()

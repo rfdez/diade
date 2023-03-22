@@ -12,3 +12,8 @@ func New(format string, args ...interface{}) error {
 func Wrap(err error, format string, args ...interface{}) error {
 	return errors.Wrapf(err, format, args...)
 }
+
+// Is reports whether any error in err's chain matches target.
+func Is(err, target error) bool {
+	return errors.Is(err, target)
+}
