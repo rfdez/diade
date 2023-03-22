@@ -1,6 +1,5 @@
 run:
   timeout: 2m
-  skip-files: []
 
 linters-settings:
   govet:
@@ -53,29 +52,23 @@ linters:
     - maligned # deprecated
     - nosnakecase # deprecated
     - scopelint # deprecated
-    - scopelint # deprecated
     - structcheck # deprecated
     - varcheck # deprecated
     - cyclop # duplicate of gocyclo
-    - dupl
-    - exhaustive
     - exhaustruct
-    - forbidigo
-    - gochecknoglobals
-    - gochecknoinits
-    - goerr113
     - gomnd
     - gosec
     - lll
-    - nilnil
     - nlreturn
     - paralleltest
     - prealloc
-    - testpackage
     - tparallel
     - varnamelen
     - wrapcheck
     - wsl
     - nosprintfhostport
     - ireturn
-    - contextcheck
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
