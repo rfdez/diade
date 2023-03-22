@@ -93,7 +93,7 @@ func (s *Server) Run(ctx context.Context) error {
 	}()
 
 	<-ctx.Done()
-	ctxShutDown, cancel := context.WithTimeout(context.Background(), s.shutdownTimeout)
+	ctxShutDown, cancel := context.WithTimeout(ctx, s.shutdownTimeout)
 	defer cancel()
 
 	log.Println("Server shutting down...")
